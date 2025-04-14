@@ -7,17 +7,17 @@ use Tax\Invoice\Constants;
 use Tax\Invoice\Utils;
 
 // 配置信息
-$appKey = 'yjh007';
-$appSecret = 'ZaNPYuaUS92PmWxYNM82ecD4SuWNvg';
+$appKey = 'your_app_key';
+$appSecret = 'your_app_secret';
 
-$nsrsbh = '91500112MADFAQ9J2P'; // 统一社会信用代码
+$nsrsbh = '91500112MADFAQ9xxx'; // 统一社会信用代码
 $title = "重庆悦江河科技有限公司";//名称（营业执照）
 $username = "19122840406";//手机号码（电子税务局）
 $password = "";//个人用户密码（电子税务局）
 $sf = "01";//身份（电子税务局）
 $fphm = "24502000000045823936";
 $kprq = "";
-$token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDcyMTI1MzUsImlhdCI6MTc0NDYyMDUzNSwiaXNzIjoieXVlMDA1IiwibnNyc2JoIjoiOTE1MDAxMTJNQURGQVE5SjJQIiwidHlwZSI6IjEifQ.J9emxcPHibqjBFydZTFjRsLueJp3Cw2tvs88GgPtytk";
+$token = "";
 
 
 try {
@@ -108,22 +108,22 @@ try {
         case 420:
             echo "登录(短信认证)\n";
             
-            // // 1. 发短信验证码
-            // $loginResponse = $client->loginDppt($nsrsbh, $username, $password, "");
-            // if ($loginResponse['code'] == 200) {
-            //     echo $loginResponse['msg'] . "\n";
-            //     echo "请" . $username . "接收验证码\n";
-            //     sleep(60); // 等待60秒
-            // }
+             // 1. 发短信验证码
+             $loginResponse = $client->loginDppt($nsrsbh, $username, $password, "");
+             if ($loginResponse['code'] == 200) {
+                 echo $loginResponse['msg'] . "\n";
+                 echo "请" . $username . "接收验证码\n";
+                 sleep(60); // 等待60秒
+             }
 
-            // // 2. 输入验证码
-            // echo "请输入验证码\n";
-            // $smsCode = ""; // 这里应该获取用户输入的验证码
-            // $loginResponse2 = $client->loginDppt($nsrsbh, $username, $password, $smsCode);
-            // if ($loginResponse2['code'] == 200) {
-            //     echo $loginResponse2['data'] . "\n";
-            //     echo "验证成功\n";
-            // }
+             // 2. 输入验证码
+             echo "请输入验证码\n";
+             $smsCode = ""; // 这里应该获取用户输入的验证码
+             $loginResponse2 = $client->loginDppt($nsrsbh, $username, $password, $smsCode);
+             if ($loginResponse2['code'] == 200) {
+                 echo $loginResponse2['data'] . "\n";
+                 echo "验证成功\n";
+             }
             break;
         case 430:
             echo "人脸认证\n";
@@ -161,10 +161,10 @@ try {
             }
             break;
         case 401:
-            echo $statusResponse['code'] . "授权失败:" . $statusResponse['msg'] . "\n";
+            echo $loginResult['code'] . "授权失败:" . $loginResult['msg'] . "\n";
             break;
         default:
-            echo $statusResponse['code'] . " " . $statusResponse['msg'] . "\n";
+            echo $loginResult['code'] . " " . $loginResult['msg'] . "\n";
             break;
     }
 } catch (InvoiceException $e) {
