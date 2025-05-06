@@ -1,10 +1,10 @@
 # 电子发票/数电发票 php SDK | 开票、验真、红冲一站式集成
 [![Packagist Version](https://img.shields.io/packagist/v/tax/invoice)](https://packagist.org/packages/tax/invoice)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/fapiaoapi/invoice-sdk-java/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/fapiaoapi/invoice-sdk-php/blob/master/LICENSE)
 
-**发票 Java SDK** 专为电子发票、数电发票（全电发票）场景设计，支持**开票、红冲、版式文件下载**等核心功能，快速对接税务平台API。
+**发票 php SDK** 专为电子发票、数电发票（全电发票）场景设计，支持**开票、红冲、版式文件下载**等核心功能，快速对接税务平台API。
 
-**关键词**: 电子发票 SDK, 数电票 Java, 发票开具, 发票红冲, 全电发票集成
+**关键词**: 电子发票SDK,数电票php,开票接口,发票api,发票开具,发票红冲,全电发票集成
 
 ---
 
