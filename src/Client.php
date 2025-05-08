@@ -72,17 +72,20 @@ class Client
      * 获取授权
      *
      * @param string $nsrsbh 纳税人识别号
+     * @param string $type 5管理
      * @return array
      * @throws InvoiceException
      */
-    public function getAuthorization(string $nsrsbh)
+    public function getAuthorization(string $nsrsbh, string $type = '6')
     {
         $params = [
             'nsrsbh' => $nsrsbh,
+            'type' => $type,
         ];
 
         return $this->request('/v5/enterprise/authorization', $params);
     }
+
 
     /**
      * 登录数电发票平台
