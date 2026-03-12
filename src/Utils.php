@@ -79,74 +79,39 @@ class Utils
      * @param float|string $taxRate 税率
      * @param bool $isIncludeTax 是否含税
      * @param int $newScale 小数位数
-     * @return string
+     * @return float
      */
-    public static function calculateTax($amount, $taxRate, bool $isIncludeTax = false, int $newScale = 2): string
+    public static function calculateTax($amount, $taxRate, bool $isIncludeTax = false, int $newScale = 2): float
     {
-        // 确保输入是字符串，以便使用BCMath函数
-        $amount = (string)$amount;
-        $taxRate = (string)$taxRate;
-        
+        if(!$taxRate){
+            return 0.00;
+        }
+
+        if(!is_string($amount)){
+            $amount = (string)$amount;
+        }
+        if (!is_string($taxRate)){
+            $taxRate = (string)$taxRate;
+        }
+
         if ($isIncludeTax) {
-            // 含税计算：税额 = 金额 / (1 + 税率) * 税率
+            //旧 税额 = 含税金额 ÷ (1 + 税率) × 税率
+            //新 含税计算：税额 = 1 / (1 + 税率) * 税率 * 含税金额
+
             // 计算 1 + 税率
             $divisor = bcadd('1', $taxRate, 10);
-            // 计算 金额 / (1 + 税率)
-            $divided = bcdiv($amount, $divisor, 10);
-            // 计算 (金额 / (1 + 税率)) * 税率
-            $tax = bcmul($divided, $taxRate, $newScale);
+            // 计算 1 / (1 + 税率)
+            $divided = bcdiv('1', $divisor, 10);
+            // 计算 1 / (1 + 税率) * 税率
+            $res = bcmul($divided, $taxRate, 10);
+            // 计算 (1 / (1 + 税率) * 税率) * 含税金额
+            $tax = bcmul($res, $amount, 10);
         } else {
             // 不含税计算：税额 = 金额 * 税率
-            $tax = bcmul($amount, $taxRate, $newScale);
+            $tax = bcmul($amount, $taxRate, 10);
         }
-        
-        return $tax;
-    }
 
-    /**
-     * 计算不含税金额
-     *
-     * @param float|string $amount 含税金额
-     * @param float|string $taxRate 税率
-     * @param int $newScale 小数位数
-     * @return string
-     */
-    public static function calculateAmountWithoutTax($amount, $taxRate, int $newScale = 2): string
-    {
-        // 确保输入是字符串，以便使用BCMath函数
-        $amount = (string)$amount;
-        $taxRate = (string)$taxRate;
-        
-        // 不含税金额 = 含税金额 / (1 + 税率)
-        // 计算 1 + 税率
-        $divisor = bcadd('1', $taxRate, 10);
-        // 计算 含税金额 / (1 + 税率)
-        $amountWithoutTax = bcdiv($amount, $divisor, $newScale);
-        
-        return $amountWithoutTax;
-    }
-
-    /**
-     * 计算含税金额
-     *
-     * @param float|string $amount 不含税金额
-     * @param float|string $taxRate 税率
-     * @param int $newScale 小数位数
-     * @return string
-     */
-    public static function calculateAmountWithTax($amount, $taxRate, int $newScale = 2): string
-    {
-        // 确保输入是字符串，以便使用BCMath函数
-        $amount = (string)$amount;
-        $taxRate = (string)$taxRate;
-        
-        // 含税金额 = 不含税金额 * (1 + 税率)
-        // 计算 1 + 税率
-        $multiplier = bcadd('1', $taxRate, 10);
-        // 计算 不含税金额 * (1 + 税率)
-        $amountWithTax = bcmul($amount, $multiplier, $newScale);
-        
-        return $amountWithTax;
+        return round($tax, $newScale);
     }
 
     /**

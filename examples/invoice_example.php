@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 use Tax\Invoice\Client;
+use Tax\Invoice\Exception\InvoiceException;
 use Tax\Invoice\InvoiceFactory;
 use Tax\Invoice\Constants;
 use Tax\Invoice\Utils;
@@ -11,8 +12,8 @@ $appKey = 'your_app_key';
 $appSecret = 'your_app_secret';
 
 $nsrsbh = '91500112MADFAQ9xxx'; // 统一社会信用代码
-$title = "重庆悦江河科技有限公司";//名称（营业执照）
-$username = "19122840406";//手机号码（电子税务局）
+$title = "xxx科技有限公司";//名称（营业执照）
+$username = "";//手机号码（电子税务局）
 $password = "";//个人用户密码（电子税务局）
 $sf = "01";//身份（电子税务局）
 $fphm = "24502000000045823936";

@@ -30,15 +30,21 @@ try {
         }
     }
 
-    // 1. 数电申请红字前查蓝票信息接口
+    /**
+     * 1. 数电申请红字前查蓝票信息接口
+     * @link https://fa-piao.com/doc.html#api8?source=github
+     */
     $sqyy = '2';
     $queryInvoiceResponse = $client->retInviceMsg( $nsrsbh, $fphm,  $sqyy, $username , $nsrsbh);
 
     if ($queryInvoiceResponse['code'] == 200) {
         echo "1 可以申请红字\n";
         sleep(2);
-        
-        // 2. 申请红字信息表
+
+        /**
+         * 2. 申请红字信息表
+         * @link https://fa-piao.com/doc.html#api9?source=github
+         */
         $applyRedParams = [
             'xhdwsbh' => $nsrsbh,
             'yfphm' => $fphm,
@@ -51,8 +57,11 @@ try {
         if ($applyRedResponse['code'] == 200) {
             echo "2 申请红字信息表\n";
             sleep(2);
-            
-            // 3. 开具红字发票
+
+            /**
+             * 3. 开具红字发票
+             * @link https://fa-piao.com/doc.html#api10?source=github
+             */
             $redInvoiceParams = [
                 'fpqqlsh' => 'red' . $fphm,
                 'username' => $username,

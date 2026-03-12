@@ -1,6 +1,6 @@
 <?php
 
-require_once 'vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Tax\Invoice\Utils;
 
@@ -63,7 +63,7 @@ echo '---------------------------------------------' . PHP_EOL;
 
 /**
  * 含税计算示例2  有价格 有数量
- * @link https://fa-piao.com/fapiao.html?action=data3
+ * @link https://fa-piao.com/fapiao.html?action=data3&source=github
  *
  */
 
@@ -133,7 +133,7 @@ echo '---------------------------------------------' . PHP_EOL;
 
 /**
  * 含税计算示例3  有价格自动算数量  购买猪肉1000元,16.8元/斤
- * @link https://fa-piao.com/fapiao.html?action=data5
+ * @link https://fa-piao.com/fapiao.html?action=data5&source=github
  *
  */
 $hsbz = 1; // 含税标志，0不含税，1含税
@@ -178,7 +178,7 @@ echo '---------------------------------------------' . PHP_EOL;
 
 /**
  * 含税计算示例4  有数量自动算价格  购买接口服务1000元7次
- * @link https://fa-piao.com/fapiao.html?action=data7
+ * @link https://fa-piao.com/fapiao.html?action=data7&source=github
  *
  */
 
@@ -236,7 +236,7 @@ echo '---------------------------------------------' . PHP_EOL;
 /**
  *
  * 不含税计算示例1 无价格 无数量
- * @link https://fa-piao.com/fapiao.html?action=data2
+ * @link https://fa-piao.com/fapiao.html?action=data2&source=github
  */
 
 $hsbz = 0; // 含税标志，0不含税，1含税
@@ -279,7 +279,7 @@ echo '---------------------------------------------' . PHP_EOL;
 /**
  *
  * 不含税计算示例2  有价格 有数量
- * @link https://fa-piao.com/fapiao.html?action=data4
+ * @link https://fa-piao.com/fapiao.html?action=data4&source=github
  */
 // 一阶水费 1吨，单价2元/吨，税率0.03
 // 二阶水费 1吨，单价3元/吨，税率0.01
@@ -348,7 +348,7 @@ echo '---------------------------------------------' . PHP_EOL;
 
 /**
  * 不含税计算示例3  有价格自动算数量  购买猪肉1000元,16.8元/斤
- * @link https://fa-piao.com/fapiao.html?action=data6
+ * @link https://fa-piao.com/fapiao.html?action=data6&source=github
  *
  */
 $hsbz = 0; // 含税标志，0不含税，1含税
@@ -390,7 +390,7 @@ echo '---------------------------------------------' . PHP_EOL;
 /**
  * 不含税计算示例4  有数量自动算价格  购买接口服务1000元7次
  *
- * @link https://fa-piao.com/fapiao.html?action=data8
+ * @link https://fa-piao.com/fapiao.html?action=data8&source=github
  *
  */
 
@@ -437,7 +437,7 @@ echo '---------------------------------------------' . PHP_EOL;
  *  hjse = se1 + se2 + ... + seN
  *  jshj = je1 + je2 + ... + jeN
  *  价税合计 =合计金额+合计税额 jshj = hjje + hjse
- * @link https://fa-piao.com/fapiao.html?action=data9
+ * @link https://fa-piao.com/fapiao.html?action=data9&source=github
  */
 
 $hsbz = 0; // 含税标志，0不含税，1含税
