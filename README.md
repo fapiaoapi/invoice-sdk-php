@@ -99,8 +99,8 @@ try {
     //一 获取授权
 
     // 从缓存redis中获取Token
-    $redis->connect('127.0.0.1', 6380);
-    $redis->auth('n5JSmu7tukTR2zEcbjBsyue1');
+    $redis->connect('127.0.0.1', 6379);
+    $redis->auth('123456');
     $key = $nsrsbh . "@TOKEN";
     $token = $redis->get($key);
     if ($token) {
