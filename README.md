@@ -65,6 +65,10 @@ composer require tax/invoice
 - 提交Issue: [问题反馈](https://github.com/fapiaoapi/invoice-sdk-php/issues)
 - 商务合作: yuejianghe@qq.com
 ```bash
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
 use Tax\Invoice\Client;
 use Tax\Invoice\Exception\InvoiceException;
 use Tax\Invoice\InvoiceFactory;
@@ -99,15 +103,15 @@ try {
     //一 获取授权
 
     // 从缓存redis中获取Token
-    $redis->connect('127.0.0.1', 6379);
+    $redis->connect('127.0.0.1', 6380);
     $redis->auth('123456');
-    $key = $nsrsbh . "@TOKEN";
+    $key = $nsrsbh ."@".$username. "@TOKEN";
     $token = $redis->get($key);
     if ($token) {
         $client->setToken($token);
         echo "Token From Redis: " . PHP_EOL;
     } else {
-        /**
+        /*
          * 获取授权Token文档
          * @link https://fa-piao.com/doc.html#api1?source=github
          */
@@ -123,7 +127,7 @@ try {
         }
     }
 
-    /**
+    /*
      * 前端模拟数电发票/电子发票开具 (蓝字发票)
      * @link https://fa-piao.com/fapiao.html?source=github
      *
@@ -131,7 +135,7 @@ try {
      * @link https://uutool.cn/json2php/
      */
     //二 开具蓝票
-    /**
+    /*
      * 开具数电发票文档
      * @link https://fa-piao.com/doc.html#api6?source=github
      *
@@ -173,7 +177,7 @@ try {
         "bz" =>"",
         "kpr" =>"张三"
     ];
-    /**
+    /*
      * 数电蓝票开具接口 文档
      * @link https://fa-piao.com/doc.html#api6?source=github
      */
@@ -185,7 +189,7 @@ try {
         echo "开票日期: " . $invoiceResponse['data']['Kprq'] . PHP_EOL;
     }
 
-    /**
+    /*
      * 获取销项数电版式文件 文档 PDF/OFD/XML
      * @link https://fa-piao.com/doc.html#api7?source=github
      */
@@ -199,12 +203,12 @@ try {
     switch ($e->getErrorCode()) {
         case 420:
             echo "登录(短信认证)". PHP_EOL;
-            /**
+            /*
              * 前端模拟短信认证弹窗
              * @link https://fa-piao.com/fapiao.html?action=sms&source=github
              */
              // 1. 发短信验证码
-            /**
+            /*
              * @link https://fa-piao.com/doc.html#api2?source=github
              */
 //             $loginResponse = $client->loginDppt($nsrsbh, $username, $password, "");
@@ -214,7 +218,7 @@ try {
 //                 sleep(60); // 等待60秒
 //             }
              // 2. 输入验证码
-            /**
+            /*
              * @link https://fa-piao.com/doc.html#api2?source=github
              */
 //             echo "请输入验证码". PHP_EOL;
@@ -227,16 +231,16 @@ try {
             break;
         case 430:
             echo "人脸认证". PHP_EOL;
-            /**
+            /*
              * 前端模拟人脸认证弹窗
              * @link https://fa-piao.com/fapiao.html?action=face&source=github
              */
             // 1. 获取人脸二维码
-            /**
+            /*
              * @link https://fa-piao.com/doc.html#api3?source=github
              */
 //            $qrCodeResponse = $client->getFaceImg($nsrsbh, $username, "1");
-//            echo $qrCodeResponse['data']['ewmlyx'] == 'swj' ? "请使用税务局app扫码". PHP_EOL : "个人所得税app扫码". PHP_EOL;
+//            echo $qrCodeResponse['data']['ewmly'] == 'swj' ? "请使用税务局app扫码". PHP_EOL : "个人所得税app扫码". PHP_EOL;
 //            if (isset($qrCodeResponse['data']['ewm']) && strlen($qrCodeResponse['data']['ewm']) < 500) {
 //                //composer require endroid/qr-code 构建二维码并获取 Base64
 //                $base64 = Builder::create()
@@ -247,7 +251,7 @@ try {
 //                    ->build()
 //                    ->getString(); // 获取 PNG 二进制数据
 //                $qrCodeResponse['data']['ewm'] = base64_encode($base64); // 转换为 Base64 编码
-//                /**
+//                /*
 //                 * $base64Uri = 'data:image/png;base64,' . $qrCodeResponse['data']['ewm'];
 /*                 * 前端使用示例: <img src="<?php echo $base64Uri; ?>" />*/
 //                 */
@@ -255,7 +259,7 @@ try {
 
 
             // 2. 认证完成后获取人脸二维码认证状态
-            /**
+            /*
              * @link https://fa-piao.com/doc.html#api4?source=github
              */
 //            $rzid = $qrCodeResponse['data']['rzid'];
@@ -271,7 +275,7 @@ try {
             //token过期 重新获取并缓存token
             echo $e->getErrorCode() . "授权失败:" . $e->getMessage() . PHP_EOL;
             break;
-        case 502:
+        case 503:
             //服务器繁忙 重新发起请求即可
             echo $e->getErrorCode() . "服务器繁忙:" . $e->getMessage() . PHP_EOL;
             break;

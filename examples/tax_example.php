@@ -22,7 +22,7 @@ use Tax\Invoice\Utils;
 
 /**
  * 含税计算示例1  无价格  无数量
- * @link https://fa-piao.com/fapiao.html?action=data1
+ * @link https://fa-piao.com/fapiao.html?action=data1&source=github
  *
  */
 

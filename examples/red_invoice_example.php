@@ -30,7 +30,7 @@ try {
         }
     }
 
-    /**
+    /*
      * 1. 数电申请红字前查蓝票信息接口
      * @link https://fa-piao.com/doc.html#api8?source=github
      */
@@ -41,7 +41,7 @@ try {
         echo "1 可以申请红字\n";
         sleep(2);
 
-        /**
+        /*
          * 2. 申请红字信息表
          * @link https://fa-piao.com/doc.html#api9?source=github
          */
@@ -58,7 +58,7 @@ try {
             echo "2 申请红字信息表\n";
             sleep(2);
 
-            /**
+            /*
              * 3. 开具红字发票
              * @link https://fa-piao.com/doc.html#api10?source=github
              */
