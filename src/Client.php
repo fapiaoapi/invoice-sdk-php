@@ -76,12 +76,18 @@ class Client
      * @return array
      * @throws InvoiceException
      */
-    public function getAuthorization(string $nsrsbh, string $type = '6')
+    public function getAuthorization(string $nsrsbh, string $type = '6',string $username='',string $password='')
     {
         $params = [
             'nsrsbh' => $nsrsbh,
             'type' => $type,
         ];
+        if(!empty($username)){
+            $params['username'] = $username;
+        }
+        if(!empty($password)){
+            $params['password'] = $password;
+        }
 
         return $this->request('/v5/enterprise/authorization', $params);
     }

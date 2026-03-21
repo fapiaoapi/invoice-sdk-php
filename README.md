@@ -68,7 +68,6 @@ composer require tax/invoice
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
-
 use Tax\Invoice\Client;
 use Tax\Invoice\Exception\InvoiceException;
 use Tax\Invoice\InvoiceFactory;
@@ -88,6 +87,7 @@ $title = "XXX有限公司";//名称（营业执照）
 $username = "";//手机号码（电子税务局）
 $password = "";//个人用户密码（电子税务局）
 $sf = "01";//身份（电子税务局）
+$type = "6"; //默认6 6基础 7标准
 $fphm = "";
 $kprq = "";
 $token = "";
@@ -115,7 +115,8 @@ try {
          * 获取授权Token文档
          * @link https://fa-piao.com/doc.html#api1?source=github
          */
-        $authResult = $client->getAuthorization($nsrsbh);
+        $authResult = $client->getAuthorization($nsrsbh,$type);
+//        $authResult = $client->getAuthorization($nsrsbh,$type,$username, $password);
         if ($authResult['code'] == 200) {
             $token = $authResult['data']['token'];
             $client->setToken($token);
@@ -287,6 +288,7 @@ try {
 } catch (\Exception $e) {
     echo "系统错误: " . $e->getMessage() . PHP_EOL;
 }
+
 
 
 ```
