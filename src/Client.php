@@ -310,6 +310,18 @@ class Client
     }
 
     /**
+     * 红字信息表同步
+     *
+     * @param array $params 开票参数
+     * @return array
+     * @throws InvoiceException
+     */
+    public function syncRedInfo(array $params): array
+    {
+        return $this->request('/v5/enterprise/hzxxbtb', $params);
+    }
+
+    /**
      * 切换电子税务局账号
      *
      * @param string $nsrsbh 纳税人识别号
