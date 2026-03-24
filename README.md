@@ -276,11 +276,6 @@ try {
             //token过期 重新获取并缓存token
             echo $e->getErrorCode() . "授权失败:" . $e->getMessage() . PHP_EOL;
             break;
-        case 503:
-            //服务器繁忙 重新发起请求即可
-            echo $e->getErrorCode() . "服务器繁忙:" . $e->getMessage() . PHP_EOL;
-            break;
-        default:
             echo "参数:".json_encode($invoiceParams ?? [], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE).PHP_EOL;
             echo $e->getErrorCode() . " " . $e->getMessage() . PHP_EOL;
             break;

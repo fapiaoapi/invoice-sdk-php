@@ -369,6 +369,32 @@ class Client
     }
 
     /**
+     * post请求
+     *
+     * @param string $url 地址
+     * @param array $params 参数
+     * @return array
+     * @throws InvoiceException
+     */
+    public function httpPost(string $url, array $params = []): array
+    {
+        return $this->request($url, $params,'POST');
+    }
+
+    /**
+     * get请求
+     *
+     * @param string $url 地址
+     * @param array $params 参数
+     * @return array
+     * @throws InvoiceException
+     */
+    public function httpGet(string $url, array $params = []): array
+    {
+        return $this->request($url, $params,'GET');
+    }
+
+    /**
      * 发送请求
      *
      * @param string $endpoint 接口地址

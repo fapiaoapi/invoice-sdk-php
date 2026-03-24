@@ -16,8 +16,8 @@ use Endroid\QrCode\ErrorCorrectionLevel;
 $appKey = '';
 $appSecret = '';
 
-$nsrsbh = '91500112MADFXXXX'; // 统一社会信用代码
-$title = "XXX有限公司";//名称（营业执照）
+$nsrsbh = ''; // 统一社会信用代码
+$title = "";//名称（营业执照）
 $username = "";//手机号码（电子税务局）
 $password = "";//个人用户密码（电子税务局）
 $sf = "01";//身份（电子税务局）
@@ -209,10 +209,6 @@ try {
         case 401:
             //token过期 重新获取并缓存token
             echo $e->getErrorCode() . "授权失败:" . $e->getMessage() . PHP_EOL;
-            break;
-        case 503:
-            //服务器繁忙 重新发起请求即可
-            echo $e->getErrorCode() . "服务器繁忙:" . $e->getMessage() . PHP_EOL;
             break;
         default:
             echo "参数:".json_encode($invoiceParams ?? [], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE).PHP_EOL;
