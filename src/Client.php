@@ -465,8 +465,6 @@ class Client
             $result = json_decode($content, true);
 
             $this->printDebug('response', [
-                'url' => $fullUrl,
-                'method' => $method,
                 'status' => $response->getStatusCode(),
                 'data' => $result === null ? $content : $result,
             ]);
