@@ -34,20 +34,31 @@ class Client
     protected $httpClient;
 
     /**
+     * 调试开关
+     */
+    protected $debug = false;
+
+    /**
      * 构造函数
      *
      * @param string $appKey AppKey
      * @param string $appSecret AppSecret
-     * @param string $baseUrl api网址 (可选)
+     * @param bool|string $debug 调试开关或api网址 (可选)
+     * @param string $baseUrl api网址或授权Token (可选)
      * @param string $token 授权Token (可选)
      */
-    public function __construct(string $appKey, string $appSecret,string $baseUrl = "",string $token = '')
+    public function __construct(string $appKey, string $appSecret, $debug = false, string $baseUrl = '', string $token = '')
     {
         $this->appKey = $appKey;
         $this->appSecret = $appSecret;
-        $this->token = $token;
-        if(!empty($baseUrl)){
+
+        
+        $this->debug = $debug;
+        if (!empty($baseUrl)) {
             $this->baseUrl = $baseUrl;
+        }
+        if (!empty($token)) {
+            $this->token = $token;
         }
         $this->httpClient = new HttpClient([
             'base_uri' => $this->baseUrl ,
@@ -65,6 +76,12 @@ class Client
     public function setToken(string $token)
     {
         $this->token = $token;
+        return $this;
+    }
+
+    public function setDebug(bool $debug)
+    {
+        $this->debug = $debug;
         return $this;
     }
 
@@ -407,6 +424,7 @@ class Client
     {
         $timestamp = time();
         $randomString = SignUtil::generateRandomString(20);
+        $method = strtoupper($method);
         
         $headers = [
             'AppKey' => $this->appKey,
@@ -418,6 +436,18 @@ class Client
         if (!empty($this->token)) {
             $headers['Authorization'] = $this->token;
         }
+
+        $fullUrl = rtrim($this->baseUrl, '/') . '/' . ltrim($endpoint, '/');
+        if ($method === 'GET' && !empty($params)) {
+            $fullUrl .= '?' . http_build_query($params);
+        }
+
+        $this->printDebug('request', [
+            'url' => $fullUrl,
+            'method' => $method,
+            'headers' => $headers,
+            'params' => $params,
+        ]);
 
         try {
             $options = [
@@ -433,6 +463,13 @@ class Client
             $response = $this->httpClient->request($method, $endpoint, $options);
             $content = $response->getBody()->getContents();
             $result = json_decode($content, true);
+
+            $this->printDebug('response', [
+                'url' => $fullUrl,
+                'method' => $method,
+                'status' => $response->getStatusCode(),
+                'data' => $result === null ? $content : $result,
+            ]);
 
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw InvoiceException::apiError(999, '响应不是有效的JSON: ' . $content);
@@ -455,7 +492,47 @@ class Client
 
             return $result;
         } catch (GuzzleException $e) {
+            $this->printDebug('error', [
+                'url' => $fullUrl,
+                'method' => $method,
+                'message' => $e->getMessage(),
+            ]);
             throw InvoiceException::networkError($e->getMessage());
         }
+    }
+
+    protected function printDebug(string $stage, array $data)
+    {
+        if (!$this->debug) {
+            return;
+        }
+
+        echo '[invoice-sdk-debug][' . $stage . '] ' .
+            json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) .
+            PHP_EOL;
+    }
+
+    protected function sanitizeHeaders(array $headers): array
+    {
+        $maskedHeaders = $headers;
+        $sensitiveKeys = ['Authorization', 'Sign'];
+
+        foreach ($sensitiveKeys as $key) {
+            if (!empty($maskedHeaders[$key])) {
+                $maskedHeaders[$key] = $this->maskValue((string)$maskedHeaders[$key]);
+            }
+        }
+
+        return $maskedHeaders;
+    }
+
+    protected function maskValue(string $value): string
+    {
+        $length = strlen($value);
+        if ($length <= 8) {
+            return str_repeat('*', $length);
+        }
+
+        return substr($value, 0, 4) . str_repeat('*', $length - 8) . substr($value, -4);
     }
 }
