@@ -305,7 +305,7 @@ function blueInvoice()
      * 开具数电发票文档
      * @link https://fa-piao.com/doc.html#api6?source=github
      *
-     * 开票参数说明demo
+     * 税额计算demo
      * @link https://github.com/fapiaoapi/invoice-sdk-php/blob/master/examples/tax_example.php
      */
     $invoiceParams = [

@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
-//require_once  'vendor/autoload.php';
+
+require_once  'vendor/autoload.php';
 
 use Tax\Invoice\Client;
 use Tax\Invoice\Exception\InvoiceException;
@@ -147,7 +147,6 @@ try {
             $timeout = 300;
             $read = [STDIN];
             $write = $except = null;
-            // 等待输入，最多 $timeout 秒
             if (stream_select($read, $write, $except, $timeout)) {
                 $input = trim(fgets(STDIN));
                 echo "你输入了：$input\n";
@@ -239,7 +238,7 @@ function blueInvoice()
      * 开具数电发票文档
      * @link https://fa-piao.com/doc.html#api6?source=github
      *
-     * 开票参数说明demo
+     * 税额计算demo
      * @link https://github.com/fapiaoapi/invoice-sdk-php/blob/master/examples/tax_example.php
      */
     $invoiceParams = [
