@@ -1,31 +1,30 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once  'vendor/autoload.php';
 
 use Tax\Invoice\Client;
-use Tax\Invoice\InvoiceFactory;
-use Tax\Invoice\Constants;
 use Tax\Invoice\Exception\InvoiceException;
-use Tax\Invoice\Utils;
+
 
 // 配置信息
-$appKey = 'your_app_key';
-$appSecret = 'your_app_secret';
-$nsrsbh = '915101820724315989'; // 纳税人识别号
-$username = '19122840xxx'; // 手机号码（电子税务局）
-$fphm = '25502000000038381718';
-$kprq = '2025-04-13 13:35:27';
+$appKey = '';
+$appSecret = '';
+$nsrsbh = ''; // 纳税人识别号
+$username = ''; // 手机号码（电子税务局）
+$fphm = '26502000000673759576'; //发票号码
+$type = '7';//6基础版7标准版
 $token = '';
 
 try {
     // 创建客户端
-    $client = new Client($appKey, $appSecret);
+    $client = new Client($appKey, $appSecret,true);
     if (!empty($token)) {
         $client->setToken($token);
     } else {
         // 获取授权
-        $authResponse = $client->getAuthorization($nsrsbh);
+        $authResponse = $client->getAuthorization($nsrsbh,$type);
         if ($authResponse['code'] == 200) {
+            $client->setToken($authResponse['data']['token']);
             echo "授权成功，Token: " . $authResponse['data']['token'] . "\n";
         }
     }
