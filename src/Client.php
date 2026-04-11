@@ -545,7 +545,7 @@ class Client
 
     protected function buildMultipartBoundary(): string
     {
-        return '----InvoicePhpSdkBoundary' . (string)round(microtime(true) * 1000);
+        return '----InvoicePhpSdk' . (string)round(microtime(true) * 1000);
     }
 
     protected function buildMultipartBody(array $params, string $boundary): string
