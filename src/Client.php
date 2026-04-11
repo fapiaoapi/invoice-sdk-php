@@ -457,7 +457,7 @@ class Client
             if ($method === 'GET') {
                 $options['query'] = $params;
             } else {
-                $options['form_params'] = $params;
+                $options['multipart'] = $this->buildMultipartData($params);
             }
 
             $response = $this->httpClient->request($method, $endpoint, $options);
@@ -508,6 +508,33 @@ class Client
         echo '[invoice-sdk-debug][' . $stage . '] ' .
             json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) .
             PHP_EOL;
+    }
+
+    protected function buildMultipartData(array $params, string $prefix = ''): array
+    {
+        $multipart = [];
+
+        foreach ($params as $key => $value) {
+            $name = $prefix === '' ? (string)$key : $prefix . '[' . $key . ']';
+
+            if (is_array($value)) {
+                $multipart = array_merge($multipart, $this->buildMultipartData($value, $name));
+                continue;
+            }
+
+            if ($value === null) {
+                $value = '';
+            } elseif (is_bool($value)) {
+                $value = $value ? '1' : '0';
+            }
+
+            $multipart[] = [
+                'name' => $name,
+                'contents' => (string)$value,
+            ];
+        }
+
+        return $multipart;
     }
 
     protected function sanitizeHeaders(array $headers): array
