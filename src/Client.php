@@ -437,6 +437,12 @@ class Client
             $headers['Authorization'] = $this->token;
         }
 
+        $multipartBoundary = '';
+        if ($method !== 'GET') {
+            $multipartBoundary = $this->buildMultipartBoundary();
+            $headers['Content-Type'] = 'multipart/form-data; boundary=' . $multipartBoundary;
+        }
+
         $fullUrl = rtrim($this->baseUrl, '/') . '/' . ltrim($endpoint, '/');
         if ($method === 'GET' && !empty($params)) {
             $fullUrl .= '?' . http_build_query($params);
@@ -457,7 +463,7 @@ class Client
             if ($method === 'GET') {
                 $options['query'] = $params;
             } else {
-                $options['multipart'] = $this->buildMultipartData($params);
+                $options['body'] = $this->buildMultipartBody($params, $multipartBoundary);
             }
 
             $response = $this->httpClient->request($method, $endpoint, $options);
@@ -535,6 +541,27 @@ class Client
         }
 
         return $multipart;
+    }
+
+    protected function buildMultipartBoundary(): string
+    {
+        return '----InvoicePhpSdkBoundary' . (string)round(microtime(true) * 1000);
+    }
+
+    protected function buildMultipartBody(array $params, string $boundary): string
+    {
+        $parts = $this->buildMultipartData($params);
+        $body = '';
+
+        foreach ($parts as $part) {
+            $body .= '--' . $boundary . "\r\n";
+            $body .= 'Content-Disposition: form-data; name="' . $part['name'] . '"' . "\r\n\r\n";
+            $body .= $part['contents'] . "\r\n";
+        }
+
+        $body .= '--' . $boundary . "--\r\n";
+
+        return $body;
     }
 
     protected function sanitizeHeaders(array $headers): array
