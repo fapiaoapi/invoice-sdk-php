@@ -62,7 +62,7 @@ class Client
         }
         $this->httpClient = new HttpClient([
             'base_uri' => $this->baseUrl ,
-            'timeout' => 30,
+            'timeout' => 150,
             'verify' => false,
         ]);
     }
