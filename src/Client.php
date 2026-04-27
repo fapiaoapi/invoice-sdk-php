@@ -431,6 +431,7 @@ class Client
             'TimeStamp' => (string)$timestamp,
             'RandomString' => $randomString,
             'Sign' => SignUtil::generateSign($method,$endpoint,$randomString,$timestamp,$this->appKey, $this->appSecret ),
+            'Sdk' => 'Php1023',
         ];
 
         if (!empty($this->token)) {
@@ -545,7 +546,7 @@ class Client
 
     protected function buildMultipartBoundary(): string
     {
-        return '----InvoicePhpSdk' . (string)round(microtime(true) * 1000);
+        return '----Php' . (string)round(microtime(true) * 1000);
     }
 
     protected function buildMultipartBody(array $params, string $boundary): string
